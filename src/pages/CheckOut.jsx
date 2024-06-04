@@ -1,18 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useContext } from 'react';
-import { FaArrowLeft } from 'react-icons/fa';
-import { Link, useLoaderData, useParams } from 'react-router-dom';
-import { CircleLoader } from 'react-spinners';
+import {  useLoaderData } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { AuthContext } from '../AuthProvider/AuthProvider';
+import useAuthInfo from '../Hooks/useAuthInfo';
 
 const CheckOut = () => {
 
 
   const data = useLoaderData()
 
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthInfo()
 
     const { title, img, price, service_id } = data;
     const handleBooking = e =>{
@@ -39,7 +35,7 @@ const CheckOut = () => {
         status:'pending'
       };
 
-      axios.post("http://localhost:5000/bookings", bookingService)
+      axios.post("https://car-doctor-server-ashy-beta.vercel.app/bookings", bookingService)
       .then(res => {
         console.log(res.data);
         const result = res.data;

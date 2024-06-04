@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Img from "../assets/images/login/login.svg";
-import { AuthContext } from '../AuthProvider/AuthProvider';
 import Swal from 'sweetalert2';
 import { updateProfile } from 'firebase/auth';
+import useAuthInfo from '../Hooks/useAuthInfo';
 const SignUp = () => {
 
-  const { createUser } = useContext(AuthContext);
+  const { createUser } = useAuthInfo()
 
     const handleSubmit = (e) => {
       e.preventDefault();

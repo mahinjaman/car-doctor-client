@@ -9,7 +9,7 @@ const Services = () => {
     const {isPending,error, data} = useQuery({
         queryKey:'services',
         queryFn: async ()=>{
-            const response = await axios.get("http://localhost:5000/services");
+            const response = await axios.get("https://car-doctor-server-ashy-beta.vercel.app/services");
             return response.data;
         },
     })

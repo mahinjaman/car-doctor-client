@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import Auth from '../Firebase/Firebase.config';
+import axios from 'axios';
 
 export const AuthContext = createContext(null);
 
@@ -46,13 +47,33 @@ const AuthProvider = ({children}) => {
 
     useEffect(()=>{
         const unSubscribe = onAuthStateChanged(Auth, currentUser =>{
+            const email = currentUser?.email || user?.email;
+            const loggedUser = {email: email}
             if(currentUser){
-                setUser(currentUser);
-                setLoading(false);
+                axios.post("https://car-doctor-server-ashy-beta.vercel.app/jwt", loggedUser, {withCredentials: true})
+                .then((res) => {
+                  const result = res.data;
+                  console.log(result)
+                  if(result.success){
+                    setUser(currentUser);
+                    setLoading(false);
+                  }
+                })
+                .catch(err => {
+                    console.log(err.message);
+                })
+                
             }
             else{
-                setUser(null);
-                setLoading(false);
+                axios.post("https://car-doctor-server-ashy-beta.vercel.app/logout", loggedUser ,{withCredentials: true})
+                .then(res => {
+                    const result = res.data;
+                    console.log(result)
+                    if(result.success){
+                        setUser(null);
+                        setLoading(false);
+                    }
+                })
             }
         })
 

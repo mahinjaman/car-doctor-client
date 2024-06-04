@@ -1,21 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../AuthProvider/AuthProvider';
+import React, {useEffect, useState } from 'react';
 import axios from 'axios';
 import BookingsCard from '../Components/Bookings/BookingsCard';
 import Swal from 'sweetalert2';
+import useAuthInfo from '../Hooks/useAuthInfo';
+import UseGetData from '../Hooks/UseGetData';
 
 const Bookings = () => {
-    const { user } = useContext(AuthContext)
+    const { user } = useAuthInfo()
     const [ bookings, setBookings ] = useState([])
 
 
     useEffect(()=>{
         axios
-          .get(`http://localhost:5000/bookings?email=${user?.email}`, {withCredentials: true})
+          .get(`https://car-doctor-server-ashy-beta.vercel.app/bookings?email=${user?.email}`, {withCredentials: true})
           .then((res) => {
             setBookings(res.data);
           });
     },[])
+
+    // const bookings = UseGetData(`https://car-doctor-server-ashy-beta.vercel.app/bookings?email=${user?.email}`, true)
 
 
     // Handle Remove Bookings
@@ -31,7 +34,7 @@ const Bookings = () => {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.delete(`http://localhost:5000/bookings/${_id}`).then((res) => {
+          axios.delete(`https://car-doctor-server-ashy-beta.vercel.app/bookings/${_id}`).then((res) => {
             const result = res.data;
             if (result.deletedCount) {
               Swal.fire({
@@ -62,7 +65,7 @@ const Bookings = () => {
         confirmButtonText: "Approved, Pending",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.patch(`http://localhost:5000/bookings/${id}`)
+          axios.patch(`https://car-doctor-server-ashy-beta.vercel.app/bookings/${id}`)
           .then(res => {
             const result = res.data;
             if(result.modifiedCount > 0){
@@ -85,7 +88,6 @@ const Bookings = () => {
 
     return (
       <div>
-        <h1>Your Booked Services</h1>
         <div>
           <div className="overflow-x-auto">
             <table className="table">

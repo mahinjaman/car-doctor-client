@@ -24,7 +24,7 @@ const routes = createBrowserRouter([
           </PrivateRoutes>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/services/${params._id}`),
+          fetch(`https://car-doctor-server-ashy-beta.vercel.app/services/${params._id}`),
       },
       {
         path: "/signup",
